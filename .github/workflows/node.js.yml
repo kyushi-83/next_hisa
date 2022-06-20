@@ -1,29 +1,38 @@
-name: Node.js CI
+name: GitHub Pages
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - main
+  pull_request:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
-      - name: Install dependencies
-        run: npm ci
-      - name: build
-        run: npm run build
-      - name: export static html
-        run: npm run export
-      - name: jekyll
-        run: touch ./.nojekyll
+          node-version: '14'
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: npm ci
+      - run: npm run build
+
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: master
-          FOLDER: out
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
