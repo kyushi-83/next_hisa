@@ -1,5 +1,7 @@
-require('dotenv').config();
+const urlPrefix = '/docs'
 
 module.exports = {
-  assetPrefix: process.env.GITHUB_PAGES ? '/repository-name' : '',
-};
+  assetPrefix: process.env.GITHUB_PAGES ? '/repository_name' : '',
+  basePath: process.env.GITHUB_PAGES ? "/repository_name/" : "",
+  trailingSlash: true,
+}
