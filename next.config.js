@@ -1,7 +1,8 @@
-const isProd = process.env.NODE_ENV === 'production';
+const urlPrefix = '/docs'
 
 module.exports = {
-  assetPrefix: isProd ? '/docs' : '',
-  basePath: process.env.GITHUB_ACTIONS ? "/repository_name/docs" : "",
-  trailingSlash: true
-};
+  // ...
+  assetPrefix: urlPrefix,
+  basePath: urlPrefix,
+  trailingSlash: true,
+}
