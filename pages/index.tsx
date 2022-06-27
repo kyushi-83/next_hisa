@@ -28,7 +28,7 @@ const Home = ({photos}) =>{
         {photos.map((post) => (
           <li key={post.id}>
             {/* リンク先を指定 */}
-            <Link href={`/detail/${post.id}`}>
+            <Link href={`/details/${post.id}`}>
               <a>{post.title}</a>
             </Link>
           </li>
@@ -42,7 +42,7 @@ const Home = ({photos}) =>{
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/photos")
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts")
   const photos = await res.json()  
   return {
     props: {
