@@ -3,8 +3,8 @@ import Image from "next/image"
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 
-export default function Home() {
-  return (
+const Home = ({photos}) =>{
+  return(
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -14,6 +14,7 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+      
         <div className={styles.grid}>
           <Link href="/list">
             <a>
@@ -22,7 +23,32 @@ export default function Home() {
             </a>
           </Link>
         </div>
+
+        <ul>
+        {photos.map((post) => (
+          <li key={post.id}>
+            {/* リンク先を指定 */}
+            <Link href={`/detail/${post.id}`}>
+              <a>{post.title}</a>
+            </Link>
+          </li>
+        ))}
+        </ul>
+
+
         <img src="/next_hisa/vercel.svg" />
     </div>
   )
 }
+
+export const getStaticProps = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/photos")
+  const photos = await res.json()  
+  return {
+    props: {
+      photos,
+    },
+  }
+}
+
+export default Home
