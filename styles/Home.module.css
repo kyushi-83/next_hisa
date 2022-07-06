@@ -108,6 +108,14 @@
   margin-left: 0.5rem;
 }
 
+.isClose {
+  display: none;
+}
+
+.isOpen {
+  display: block;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

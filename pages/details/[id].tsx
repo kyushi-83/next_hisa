@@ -4,20 +4,32 @@ import Link from 'next/link'
 
 const Detail = ({post}) =>{
   return(
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.body}</p>
-      <Link href="/">
-        <a>Back</a>
-      </Link>
-    </div>
+
+      <div>
+        <Head>
+        <link rel="icon" href="/next_hisa/favicon2.ico" />
+        </Head>
+        {post.map((post) => (
+          <div>
+            <p><img src={post.logo_image} /></p>
+          <p>{post.name}</p>
+          <p>{post.access}</p>
+          
+          </div>
+        ))}
+        <Link href="/">
+            <a>TOPへのリンク</a>
+        </Link>
+      </div>
+
   )
 }
 
 export const getStaticPaths = async () => {
   // 外部APIエンドポイントを呼び出しデータ取得
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts")
-  const photos = await res.json()  
+  const res = await fetch("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&large_area=Z011&count=100&format=json")
+  const todos = await res.json()  
+  const photos = todos.results.shop 
 
   // 事前ビルドしたいパスを指定
   const paths = photos.map((post) => ({
@@ -33,8 +45,9 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {  
   // 外部APIエンドポイントを呼び出しデータ取得
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
-  const post = await res.json()  
+  const res2 = await fetch(`https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&large_area=Z011&count=100&format=json&id=${params.id}`)
+  const todos2 = await res2.json()  
+  const post = todos2.results.shop 
 
   // ページコンポーネントにpropsとしてに渡す
   return {
