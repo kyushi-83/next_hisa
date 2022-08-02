@@ -1,0 +1,64 @@
+@use "../base/mixin" as mixin;
+.site_logo{
+  font-size: 1.3rem;
+}
+button{
+  width: 5rem;
+  padding: 12px 0;
+  background: mixin.$color2;
+  border-radius: 4px;
+  color: #fff;
+  text-align: center;
+  font-size: 0.9vw;
+}
+input,select{
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  border-radius: 4px;
+  background: #fff;
+  outline: none;
+}
+
+input[type="search"]{
+  width: 100%;
+}
+select{
+  width: 100%;
+  background: #fff url("/next_hisa/arrow_b.svg") no-repeat center right 4px;
+  background-size: 24px;
+  padding-right: 30px;
+}
+.item_list{
+  .unit{
+    margin-bottom: 30px;
+    a{
+      display: flex;
+      background: #fff url("/next_hisa/arrow_r.svg") no-repeat center right 10px;
+      padding: 30px 40px 30px 30px;
+      box-sizing: border-box;
+      .img{
+        margin-right: 20px;
+      }
+      .txt{
+        .name{
+          margin-bottom: 20px;
+          font-weight: 600;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+.btn_more{
+  margin: 60px 0 90px;
+  button{
+    width: 60%;
+    margin: 0 20%;
+    padding: 20px 0;
+    font-size: 0.9rem;
+  }
+}
+.no_item{
+  text-align: center;
+  margin-top: 100px;
+}

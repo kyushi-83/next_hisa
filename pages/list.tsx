@@ -23,18 +23,8 @@ const List = () => {
     firstName: ''
   })
 
-  useEffect(() => {
-    document.title = `${count2}回クリックされました`
-  },[count2])
-
-
   return(
-    <>
-      <Head>
-        <title>List</title>
-        <meta name="description" content="listページ" />
-        <link rel="icon" href="/next_hisa/favicon2.ico" />
-      </Head>
+    <section className="main_contena">
       <button onClick={toggle}>{open ? 'close' : 'open'}</button>
       <div className={open ? 'isOpen' : 'isClose'}>
         <p>現在の数字は{count}です</p>
@@ -67,7 +57,7 @@ const List = () => {
       <Link href="/">
         <a>back to top</a>
       </Link>
-    </>
+    </section>
   )
 
 }

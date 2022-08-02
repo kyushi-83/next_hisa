@@ -1,0 +1,46 @@
+@use "../base/mixin" as mixin;
+
+.item_list{
+  display: block;
+}
+.detail_content{
+  .breadCrumb{
+    margin-bottom: 30px;
+  }
+  .name{
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  .inner{
+    padding: 40px;
+    box-sizing: border-box;
+    .img{
+      margin-bottom: 40px;
+      img{
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+      }
+    }
+    .txt{
+      margin-bottom: 10px;
+      .b{
+        font-weight: 600;
+      }
+    }
+    .tag_list{
+      margin-top: 20px;
+      .tag{
+        display: inline-block;
+        margin: 0 10px 10px 0;
+        background: mixin.$color;
+        color: #fff;
+        padding: 5px 12px 6px;
+        font-size: 0.7rem;
+        border-radius: 40px;
+      }
+    }
+  }
+}

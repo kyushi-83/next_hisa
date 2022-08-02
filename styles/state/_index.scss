@@ -1,0 +1,14 @@
+@use "../base/mixin" as mixin;
+
+.isOpen{
+  display: block;
+}
+.isClose{
+  display: none;
+}
+header.haderCs{
+  transform: translateY(-100%);
+}
+.search_contena_none{
+  transform: translateY(-180%);
+}

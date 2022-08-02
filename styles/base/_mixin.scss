@@ -1,0 +1,11 @@
+$color:#2e3c42;
+$color2:#DA3535;
+$z-map: (
+headerfixed,
+swiper-pagination,
+modal_bk,
+modal_wrap
+);
+@function z($name) {
+  @return index($z-map, $name) + 100000;
+}
