@@ -75,11 +75,11 @@ const Content = ({data}) =>{
     if (page.results_start === 1) return
     const num = page.results_start + 10
     setCount(num)
-
     const params = { start: page.results_start, keyword: keyword, small_area: small_area, order: order, count: count}
     const query = new URLSearchParams(params)
     const request = async () => {
       const res = await fetch(`/next_hisa/api/search/?${query}`)
+      console.log(res)
       const users = await res.json()
       const nextData = users.users.results
       
