@@ -10,9 +10,8 @@ const ScrollRevealContainer = dynamic(
 import { metaContext } from '../components/layout'
 import { UserCountRed } from '../components/layout'
 
-const defaultEndpoint = "https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&format=json&large_area=Z011"
-export async function getStaticProps() {
-  const res = await fetch(defaultEndpoint),
+export const getStaticProps = async () => {
+  const res = await fetch("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&format=json&large_area=Z011"),
         data = await res.json()
   return {
     props: {
