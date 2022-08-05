@@ -43,4 +43,32 @@
       }
     }
   }
+  .breadcrumb{
+    margin-bottom: 30px;
+    ul{
+      display:flex;
+      li{
+        margin-right: 10px;
+        a{
+          display: block;
+          text-decoration: underline;
+        }
+        &.prev{
+          padding-right: 20px;
+          position: relative;
+          &:after{
+            content:"";
+            position: absolute;
+            top:0;
+            bottom:0;
+            right:0;
+            margin: auto;
+            width: 10px;
+            height:10px;
+            background: url("/next_hisa/arrow_r.svg") no-repeat center center;
+          }
+        }
+      }
+    }
+  }
 }

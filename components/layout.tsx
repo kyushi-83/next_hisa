@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import Header from './header'
 import Footer from "./footer";
-import React, { useReducer } from 'react';
-import { createContext, useState} from 'react';
+import React, { useReducer,useState, useEffect, createContext,useContext, useRef} from 'react';
 import Head from 'next/head'
+import useScroll from "../components/useScroll"
 
 export const metaContext= createContext();
 export const UserCountRed = createContext();
@@ -24,6 +24,7 @@ const meta = {
 }
 
 const Layout = ({ children }: Props) => {
+  const scrollNum = useScroll()
   const reducer = (state, action) => {
     switch(action){
       case 'ENDOH':
@@ -40,9 +41,16 @@ const Layout = ({ children }: Props) => {
         return state
     }
   };
+  const [state, dispatch] = useReducer(reducer, initialState),
+  [btnName, btnNameCh] = useState('')
 
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+  useEffect(() => {
+    if (scrollNum > 300) {
+      btnNameCh('page_top show')
+    }else{
+      btnNameCh('page_top')
+    }
+  }, [scrollNum]);
   
   return (
     <>
@@ -56,7 +64,10 @@ const Layout = ({ children }: Props) => {
       </Head>
      <UserCountRed.Provider value={{ state, dispatch }}>
       <metaContext.Provider value={meta}>
-        <Header /><main className="main">{children}</main><Footer />
+        <Header />
+        <main className="main">{children}</main>
+        <div className={btnName} onClick={() => dispatch('returnTop')}></div>
+        <Footer />
       </metaContext.Provider>
       </UserCountRed.Provider>
     </>

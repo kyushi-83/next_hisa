@@ -3,22 +3,18 @@ import Link from 'next/link'
 import { useState, useEffect, useContext } from 'react'
 import { metaContext } from '../../components/layout'
 import { UserCountRed } from '../../components/layout'
+import Breadcrumb from '../../components/Breadcrumb'
 
 const Detail = ({post}) =>{
+  console.log(post)
   const meta = useContext(metaContext)
   const { state, dispatch } = useContext(UserCountRed);
+  const Breadcrumbs = Breadcrumb(post[0].name)
   return(
     <>
       {post.map((post) => (
       <section className="detail_content" key={post.key}>
-      <nav class="breadCrumb">
-      <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="flex">
-      <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-      <Link href={`/`}><a itemprop="item"><span itemprop="name">トップ</span></a></Link></li>
-      <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><span itemprop="name">{post.name}</span></li>
-      </ol>
-      </nav>
-      
+      {Breadcrumbs}
       <Head>
         <title>{post.name} | {meta.title}</title>
         <meta name="description" content={post.name} />
@@ -40,12 +36,9 @@ const Detail = ({post}) =>{
             {post.card == '利用可' ? (<span className="tag">カード可</span>):(<></>)}
             {post.non_smoking == '一部禁煙' ? (<span className="tag">喫煙可</span>):(<></>)}
             {post.lunch == 'あり' ? (<span className="tag">ランチあり</span>):(<></>)}
-            
             </p>
           </div>
-
         </div>
-        <button onClick={() => dispatch('returnTop')}>TOPへ戻る</button>
       </section>
       ))}
     </>
@@ -56,8 +49,8 @@ export const getStaticPaths = async () => {
   // 外部APIエンドポイントを呼び出しデータ取得
   const res = await fetch("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&large_area=Z011&count=100&format=json")
   const todos = await res.json()  
+  
   const photos = todos.results.shop 
-
   // 事前ビルドしたいパスを指定
   const paths = photos.map((post) => ({
     params: {

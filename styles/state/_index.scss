@@ -12,3 +12,8 @@ header.haderCs{
 .search_contena_none{
   transform: translateY(-180%);
 }
+.page_top{
+  &.show{
+    bottom:100px;
+  }
+}
