@@ -17,3 +17,11 @@ header.haderCs{
     bottom:100px;
   }
 }
+.load{
+  &.show{
+    display: block;
+  }
+  &.hide{
+    display: none;
+  }
+}

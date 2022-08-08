@@ -74,3 +74,20 @@ select{
   cursor: pointer;
   transition: all  0.6s ease;
 }
+.load{
+  display: none;
+  position: fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  background: url("/next_hisa/load.gif") no-repeat center center;
+  background-size: 100px;
+  &.ver2{
+    top:350px;
+  }
+}

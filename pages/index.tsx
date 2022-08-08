@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useState, useEffect, useContext } from 'react'
@@ -11,15 +10,20 @@ import { metaContext } from '../components/layout'
 import { UserCountRed } from '../components/layout'
 
 export const getStaticProps = async () => {
-  const res = await fetch("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&format=json&large_area=Z011"),
-        data = await res.json()
-  return {
-    props: {
-      data,
-    },
+  try{
+      const res = await fetch("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=9701ee592ce2d429&format=json&large_area=Z011")
+      const data = await res.json()
+      return {
+        props: {
+          data,
+        },
+      }
+  }catch(err){
+    return
   }
 }
 const Content = ({data}) =>{
+  const [load, loaduse] = useState('load')
   const scrollNum = useScroll(),
         [searchcontenaName, searchcontenaNameFixed] = useState('search_contena'),
         [offsetNum, offsetFunc] = useState(0),
@@ -48,54 +52,57 @@ const Content = ({data}) =>{
     if(small_area == '場所を選択'){
       setSmallarea('') 
     }
-
-    const params = { keyword: keyword, small_area: small_area, order: order}
-    const query = new URLSearchParams(params)
-
+    loaduse('load show')
+    const params = { keyword: keyword, small_area: small_area, order: order},
+          query = new URLSearchParams(params)
     const request = async () => {
-      const res = await fetch(`/next_hisa/api/search?${query}`)
-      const users = await res.json()
-      const nextData = users.users.results
-
-      updatePage({
-        results_available: nextData.results_available,
-        results_returned: nextData.results_returned,
-        results_start: nextData.results_start,
-      })
-
-      updateShops(nextData.shop)
+      try{
+          const res = await fetch(`/next_hisa/api/search?${query}`)
+          const users = await res.json()
+          const nextData = users.users.results
+          updatePage({
+            results_available: nextData.results_available,
+            results_returned: nextData.results_returned,
+            results_start: nextData.results_start,
+          })
+          updateShops(nextData.shop)
+          loaduse('load hide')
+      }catch{
+          return
+      }
     }
     request()
     dispatch('returnTop')
   }, [keyword,small_area,order])
 
-
   useEffect(() => {
     if (page.results_start === 1) return
-    const num = page.results_start + 10
+    const num = page.results_start + 10,
+          params = { start: page.results_start, keyword: keyword, small_area: small_area, order: order, count: count},
+          query = new URLSearchParams(params)
     setCount(num)
-    const params = { start: page.results_start, keyword: keyword, small_area: small_area, order: order, count: count}
-    const query = new URLSearchParams(params)
+    loaduse('load ver2 show')
     const request = async () => {
-      const res = await fetch(`/next_hisa/api/search/?${query}`)
-      console.log(res)
-      const users = await res.json()
-      const nextData = users.users.results
-      
-      updatePage({
-        results_available: nextData.results_available,
-        results_returned: nextData.results_returned,
-        results_start: nextData.results_start,
-      })
+      try{
+          const res = await fetch(`/next_hisa/api/search/?${query}`),
+                users = await res.json(),
+                nextData = users.users.results
+          updatePage({
+            results_available: nextData.results_available,
+            results_returned: nextData.results_returned,
+            results_start: nextData.results_start,
+          })
+          if (nextData.results_start === 1) {
+            updateShops(nextData.shop)
+            return
+          }
+          updateShops((prev) => {
+            return [...prev, ...nextData.shop]
+          })
+          loaduse('load hide')
+      }catch{
 
-      if (nextData.results_start === 1) {
-        updateShops(nextData.shop)
-        return
       }
-
-      updateShops((prev) => {
-        return [...prev, ...nextData.shop]
-      })
     }
     request()
   }, [page.results_start])
@@ -109,7 +116,6 @@ const Content = ({data}) =>{
     offsetFunc(scrollNum)
   }, [scrollNum]);
   
-
   const handlerOnClickReadMore = () => {
     //if (page.results_returned <= page.results_start) return
 
@@ -123,15 +129,12 @@ const Content = ({data}) =>{
 
   const handlerOnSubmitSearch = (e) => {
     e.preventDefault()
-
-    const { currentTarget = {} } = e
-    const fields = Array.from(currentTarget?.elements)
-    const fieldQuery = fields.find((field) => field.name === 'query')
-    const fieldSelect = fields.find((field) => field.name === 'small_area')
-
-    const value = fieldQuery.value || ''
-    const value2 = fieldSelect.value || ''
-
+    const { currentTarget = {} } = e,
+          fields = Array.from(currentTarget?.elements),
+          fieldQuery = fields.find((field) => field.name === 'query'),
+          fieldSelect = fields.find((field) => field.name === 'small_area'),
+          value = fieldQuery.value || '',
+          value2 = fieldSelect.value || ''
     setKeyword(value)
     setSmallarea(value2)
   }
@@ -145,6 +148,7 @@ const Content = ({data}) =>{
   return (
     <>
     <section className={searchcontenaName}>
+        <p className={load}></p>
         <div className="inner">
         <form onSubmit={handlerOnSubmitSearch}>
           <p className="unit"><input type="search" name="query" placeholder="キーワードを入力して下さい" /></p>
