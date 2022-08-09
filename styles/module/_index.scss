@@ -91,3 +91,16 @@ select{
     top:350px;
   }
 }
+.btn_custom{
+  a{
+    display: block;
+    width: 200px;
+    padding: 12px 0;
+    margin: 0 auto;
+    background: mixin.$color;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+    font-size: 0.9vw;
+  }
+}
