@@ -1,12 +1,23 @@
 
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, {useState, useEffect} from 'react'
 
 const List2 = () => {
 
+  const router = useRouter()
+
   const [open, setOpen] = useState(false)
   // toggleの関数を宣言
   const toggle = () => setOpen(!open)
+
+  const inpRoute = (e) => {
+    router.push({
+      pathname:"/sub",
+      query: {p :e} 
+    })
+  }
+
 
 
   return(
@@ -19,6 +30,10 @@ const List2 = () => {
       <Link href="/">
         <a>back to top</a>
       </Link>
+
+      <button onClick={() => inpRoute('power')}></button>
+
+
     </section>
   )
 

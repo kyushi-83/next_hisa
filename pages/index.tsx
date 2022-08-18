@@ -6,7 +6,7 @@ const ScrollRevealContainer = dynamic(
   import('../components/ScrollRevealContainer'),
   {ssr: false,}
 );
-import { metaContext } from '../components/layout'
+//import { metaContext } from '../components/layout'
 import { UserCountRed } from '../components/layout'
 
 export const getStaticProps = async () => {
@@ -27,7 +27,7 @@ const Content = ({data}) =>{
   const scrollNum = useScroll(),
         [searchcontenaName, searchcontenaNameFixed] = useState('search_contena'),
         [offsetNum, offsetFunc] = useState(0),
-        meta = useContext(metaContext),
+        //meta = useContext(metaContext),
         { state, dispatch } = useContext(UserCountRed),
         {
           results_available = 0,
@@ -49,9 +49,7 @@ const Content = ({data}) =>{
 
   useEffect(() => {
     //if ((keyword === '' && small_area === '') || (keyword === '' && small_area === '場所を選択')) return
-    if(small_area == '場所を選択'){
-      setSmallarea('') 
-    }
+    if (small_area == '場所を選択'){ setSmallarea('') }
     loaduse('load show')
     const params = { keyword: keyword, small_area: small_area, order: order},
           query = new URLSearchParams(params)
@@ -74,6 +72,8 @@ const Content = ({data}) =>{
     request()
     dispatch('returnTop')
   }, [keyword,small_area,order])
+
+  
 
   useEffect(() => {
     if (page.results_start === 1) return
@@ -101,7 +101,7 @@ const Content = ({data}) =>{
           })
           loaduse('load hide')
       }catch{
-
+        return
       }
     }
     request()
@@ -188,7 +188,6 @@ const Content = ({data}) =>{
                     <div className="txt">
                       <p className="name">{item.name}</p>
                       <p className="access">アクセス：{item.access}</p>
-                      <p className="open">営業時間：{item.open}</p>
                     </div>
                   </a>
                 </Link>
